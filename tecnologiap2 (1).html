@@ -1,56 +1,94 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TI</title>
-</head>
-<body>
-    <header>
-        <h1>Tópicos abordados no TI </h1>
-    </header>
-    <nav>
-       
-    </nav>
-    <main>
-        <p>A tecnologia da informação é essencial nos dias de hoje. Nesta página, explicaremos os seguintes tópicos:</p>
-        <ul>
-            <li>Redes de Computadores</li>
-            <img src="https://www.portalgsti.com.br/media/uploads/marcomascarenhas/rede-de-computadores.jpg" alt="Descrição da Imagem">
-           <p> Rede de computadores é um conjunto de dispositivos eletrônicos, como computadores, servidores, roteadores, switches e outros equipamentos, interconectados para compartilhar recursos, trocar informações e colaborar entre si. O principal objetivo de uma rede de computadores é permitir a comunicação eficiente e o compartilhamento de dados entre os dispositivos conectados.
-        </p>
-         <li>Desenvolvimento de Software</li>
-         <style>
-            .imagem-redimensionada {
-                width: 50%; /* Reduz a largura da imagem em 20% */
-            }
-        </style>
-    </head>
-    <body>
-    
-    <img class="imagem-redimensionada" src="https://www.inteli.edu.br/wp-content/uploads/2022/08/24171131/eng-soft-768x593-1-1.jpg" alt="Descrição da Imagem">
-    
-    </body>
-            <p>O Desenvolvimento de Software é o processo de criar, projetar, programar, testar e manter programas de computador, aplicativos e sistemas de software. É uma disciplina central na área de Tecnologia da Informação (TI) e abrange todas as etapas envolvidas na criação de software funcional e eficiente para atender às necessidades dos usuários e das organizações.
-        </p>
-         <li>Segurança da Informação</li>
-         <style>
-            .imagem-redimensionada {
-                width: 50%; /* Reduz a largura da imagem em 20% */
-            }
-        </style>
-    </head>
-    <body>
-    
-    <img class="imagem-redimensionada" src="https://www.oneit.com.br/wp-content/uploads/2021/04/seguranca-da-informacao.jpg" alt="Descrição da Imagem">
-    
-    </body>
-         <p>  Segurança da Informação é um conjunto de práticas, processos e medidas voltadas para a proteção de dados, sistemas de informação e recursos tecnológicos contra ameaças, riscos e ataques que visam comprometer a confidencialidade, integridade e disponibilidade das informações.
-O objetivo principal da Segurança da Informação é garantir que as informações sejam manuseadas de maneira segura, prevenindo o acesso não autorizado, minimizando o risco de perda ou roubo de dados, e assegurando que os sistemas e redes permaneçam operacionais e protegidos contra possíveis ataques cibernéticos.
-</p>
-        </ul>
-        <ul>
-            <li><a href="file:///C:/Users/Flavia%20Raquel/OneDrive/%C3%81rea%20de%20Trabalho/A%20base%20da%20tecnologia.html/a%20base%20da%20tecnologia.html">Página Inicial</a></li>
+import pygame
+import random
+import sys
 
-        </ul>
-    </main>
-</body>
-</html>
+# Inicialização do Pygame
+pygame.init()
+
+# Configurações da tela
+WIDTH, HEIGHT = 400, 600
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Flappy Bird")
+
+# Cores
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Configurações do pássaro
+bird_img = pygame.image.load("bird.png")
+bird_rect = bird_img.get_rect(center=(50, HEIGHT // 2))
+bird_movement = 0
+GRAVITY = 0.25
+FLAP_FORCE = -5
+
+# Configurações dos canos
+pipe_img = pygame.image.load("pipe.png")
+pipe_list = []
+SPAWNPIPE = pygame.USEREVENT
+pygame.time.set_timer(SPAWNPIPE, 1200)
+pipe_heights = [200, 300, 400]
+
+# Função para criar canos
+def create_pipe():
+    random_pipe_pos = random.choice(pipe_heights)
+    bottom_pipe = pipe_img.get_rect(midtop=(WIDTH + 50, random_pipe_pos))
+    top_pipe = pipe_img.get_rect(midbottom=(WIDTH + 50, random_pipe_pos - 200))
+    return bottom_pipe, top_pipe
+
+# Função para mover canos
+def move_pipes(pipes):
+    for pipe in pipes:
+        pipe.centerx -= 5
+    return pipes
+
+# Função para desenhar os canos
+def draw_pipes(pipes):
+    for pipe in pipes:
+        if pipe.bottom >= HEIGHT:
+            SCREEN.blit(pipe_img, pipe)
+        else:
+            flip_pipe = pygame.transform.flip(pipe_img, False, True)
+            SCREEN.blit(flip_pipe, pipe)
+
+# Função para verificar colisões
+def check_collision(pipes):
+    for pipe in pipes:
+        if bird_rect.colliderect(pipe):
+            return True
+    if bird_rect.top <= -100 or bird_rect.bottom >= HEIGHT - 50:
+        return True
+    return False
+
+# Loop principal
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                bird_movement = FLAP_FORCE
+        if event.type == SPAWNPIPE:
+            pipe_list.extend(create_pipe())
+
+    # Movimento do pássaro
+    bird_movement += GRAVITY
+    bird_rect.centery += bird_movement
+
+    # Desenhar fundo
+    SCREEN.fill(WHITE)
+
+    # Desenhar pássaro
+    SCREEN.blit(bird_img, bird_rect)
+
+    # Mover e desenhar canos
+    pipe_list = move_pipes(pipe_list)
+    draw_pipes(pipe_list)
+
+    # Verificar colisões
+    if check_collision(pipe_list):
+        pygame.quit()
+        sys.exit()
+
+    # Atualizar tela
+    pygame.display.update()
