@@ -1,94 +1,75 @@
-import pygame
-import random
-import sys
-
-# Inicialização do Pygame
-pygame.init()
-
-# Configurações da tela
-WIDTH, HEIGHT = 400, 600
-SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Flappy Bird")
-
-# Cores
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-# Configurações do pássaro
-bird_img = pygame.image.load("bird.png")
-bird_rect = bird_img.get_rect(center=(50, HEIGHT // 2))
-bird_movement = 0
-GRAVITY = 0.25
-FLAP_FORCE = -5
-
-# Configurações dos canos
-pipe_img = pygame.image.load("pipe.png")
-pipe_list = []
-SPAWNPIPE = pygame.USEREVENT
-pygame.time.set_timer(SPAWNPIPE, 1200)
-pipe_heights = [200, 300, 400]
-
-# Função para criar canos
-def create_pipe():
-    random_pipe_pos = random.choice(pipe_heights)
-    bottom_pipe = pipe_img.get_rect(midtop=(WIDTH + 50, random_pipe_pos))
-    top_pipe = pipe_img.get_rect(midbottom=(WIDTH + 50, random_pipe_pos - 200))
-    return bottom_pipe, top_pipe
-
-# Função para mover canos
-def move_pipes(pipes):
-    for pipe in pipes:
-        pipe.centerx -= 5
-    return pipes
-
-# Função para desenhar os canos
-def draw_pipes(pipes):
-    for pipe in pipes:
-        if pipe.bottom >= HEIGHT:
-            SCREEN.blit(pipe_img, pipe)
-        else:
-            flip_pipe = pygame.transform.flip(pipe_img, False, True)
-            SCREEN.blit(flip_pipe, pipe)
-
-# Função para verificar colisões
-def check_collision(pipes):
-    for pipe in pipes:
-        if bird_rect.colliderect(pipe):
-            return True
-    if bird_rect.top <= -100 or bird_rect.bottom >= HEIGHT - 50:
-        return True
-    return False
-
-# Loop principal
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                bird_movement = FLAP_FORCE
-        if event.type == SPAWNPIPE:
-            pipe_list.extend(create_pipe())
-
-    # Movimento do pássaro
-    bird_movement += GRAVITY
-    bird_rect.centery += bird_movement
-
-    # Desenhar fundo
-    SCREEN.fill(WHITE)
-
-    # Desenhar pássaro
-    SCREEN.blit(bird_img, bird_rect)
-
-    # Mover e desenhar canos
-    pipe_list = move_pipes(pipe_list)
-    draw_pipes(pipe_list)
-
-    # Verificar colisões
-    if check_collision(pipe_list):
-        pygame.quit()
-        sys.exit()
-
-    # Atualizar tela
-    pygame.display.update()
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        .column {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            width: 30%;
+        }
+        .task {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .add-task {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .add-task input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .add-task button {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-task button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column">
+            <h2>Para Fazer</h2>
+            <div class="task">Tarefa 1</div>
+            <div class="task">Tarefa 2</div>
+            <div class="add-task">
+                <input type="text" placeholder="Adicionar nova tarefa">
+                <button>Adicionar</button>
+            </div>
+        </div>
+        <div class="column">
+            <h2>Em Progresso</h2>
+            <div class="task">Tarefa 3</div>
+        </div>
+        <div class="column">
+            <h2>Concluído</h2>
+            <div class="task">Tarefa 4</div>
+            <div class="task">Tarefa 5</div>
+        </div>
+    </div>
+</body>
+</html>
