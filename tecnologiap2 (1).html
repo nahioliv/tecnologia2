@@ -28,6 +28,9 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             cursor: pointer; /* Muda o cursor ao passar sobre a tarefa */
+            width: 100%;
+            resize: vertical; /* Permite redimensionar verticalmente */
+            overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
         }
         .add-task {
             margin-top: 10px;
@@ -57,20 +60,26 @@
     <div class="container">
         <div class="column">
             <h2>Para Fazer</h2>
-            <textarea class="task">Tarefa 1</button>
-            <textarea class="task">Tarefa 2</button>
+            <textarea class="task" rows="4">Tarefa 1</textarea>
+            <textarea class="task" rows="4">Tarefa 2</textarea>
             <div class="add-task">
                 <input type="text" placeholder="Adicionar nova tarefa">
-                <textarea>Adicionar</textarea>
+                <button>Adicionar</button>
             </div>
         </div>
         <div class="column">
             <h2>Em Progresso</h2>
-            <button class="task">Tarefa 3</button>
+            <textarea class="task" rows="4">Tarefa 3</textarea>
         </div>
         <div class="column">
             <h2>Concluído</h2>
-            <button class="task">Tarefa 4</button>
+            <textarea class="task" rows="4">Tarefa 4</textarea>
+            <textarea class="task" rows="4">Tarefa 5</textarea>
+        </div>
+    </div>
+</body>
+</html>
+
             <button class="task">Tarefa 5</button>
         </div>
     </div>
