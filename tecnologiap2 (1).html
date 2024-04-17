@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f3f3f3;
+            background-color: #4b5320; /* Cor verde militar */
+            color: #fff; /* Cor do texto */
         }
         .container {
             display: flex;
@@ -26,6 +27,7 @@
             margin-bottom: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer; /* Muda o cursor ao passar sobre a tarefa */
         }
         .add-task {
             margin-top: 10px;
@@ -55,8 +57,8 @@
     <div class="container">
         <div class="column">
             <h2>Para Fazer</h2>
-            <div class="task">Tarefa 1</div>
-            <div class="task">Tarefa 2</div>
+            <button class="task">Tarefa 1</button>
+            <button class="task">Tarefa 2</button>
             <div class="add-task">
                 <input type="text" placeholder="Adicionar nova tarefa">
                 <button>Adicionar</button>
@@ -64,12 +66,12 @@
         </div>
         <div class="column">
             <h2>Em Progresso</h2>
-            <div class="task">Tarefa 3</div>
+            <button class="task">Tarefa 3</button>
         </div>
         <div class="column">
             <h2>Concluído</h2>
-            <div class="task">Tarefa 4</div>
-            <div class="task">Tarefa 5</div>
+            <button class="task">Tarefa 4</button>
+            <button class="task">Tarefa 5</button>
         </div>
     </div>
 </body>
